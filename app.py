@@ -1,187 +1,203 @@
 import streamlit as st
-from pptx import Presentation
-from pptx.util import Inches, Pt
-from pptx.enum.text import PP_ALIGN
-import io
-import requests
 
 # --- DETAILED SLIDE CONTENT DATABASE ---
 SLIDES = [
     {
-        "title": "Digital Activism: Social Action and Social Movements",
+        "title": "Social Action and Social Movements",
         "subtitle": "Course Code 401, M.A. Social Work, Semester IV\nUniversity of Delhi\nPresented to: Dr. Pushpanjali Jha\nGroup Members: Monika R., Aniruddh Singh, Suhail Khan, Shambhavi Mishra, Drisya, Bhawna Sharma, Tannu Tanwar, Sayna Choudhary, Gaurav Nishad, Ankit Kumar",
         "img": "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800"
     },
     {
         "author": "Monika R.",
         "title": "The Emergence of Digital Activism",
-        "content": "• Historical Continuity: Digital activism is a reconfiguration of long-standing practices of collective action rather than a sudden rupture.\n• Technological Evolution: Activism has shifted through print, radio, and television, with each shift redefining the scale and visibility of movements.\n• The Internet’s Dimension: Unlike previous media, the internet enables immediacy, interactivity, and transnational connectivity.\n• Structural Markers: The 1990s Zapatista uprising is a critical historical marker for using early digital networks to mobilize global solidarity.",
+        "content": "• <b>Historical Continuity:</b> Digital activism is a reconfiguration of long-standing practices of collective action rather than a sudden rupture.<br><br>• <b>Technological Evolution:</b> Activism has shifted through print, radio, and television, with each shift redefining the scale and visibility of movements.<br><br>• <b>The Internet’s Dimension:</b> Unlike previous media, the internet enables immediacy, interactivity, and transnational connectivity.<br><br>• <b>Structural Markers:</b> The 1990s Zapatista uprising is a critical historical marker for using early digital networks to mobilize global solidarity.",
         "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800"
     },
     {
         "author": "Aniruddh Singh",
         "title": "Trajectories and Milestones",
-        "content": "• 1994 - The Informational Guerrilla: The EZLN (Zapatistas) achieved international reach despite primitive infrastructure.\n• 2004 - The Rise of Web 2.0: The era of 'prosumption' began, where users simultaneously produce and consume activist content.\n• 2011 - The Year of the Protester: Time Magazine designated 2011 as such due to the Arab Spring, Spanish Indignados, and Occupy Wall Street movements.\n• Case Study: Invisible Children utilized YouTube in 2006 to mobilize 80,000 people for the 'Night Commute'.",
+        "content": "• <b>1994 - The Informational Guerrilla:</b> The EZLN (Zapatistas) achieved international reach despite primitive infrastructure.<br><br>• <b>2004 - The Rise of Web 2.0:</b> The era of 'prosumption' began, where users simultaneously produce and consume activist content.<br><br>• <b>2011 - The Year of the Protester:</b> Time Magazine designated 2011 as such due to the Arab Spring, Spanish Indignados, and Occupy Wall Street movements.<br><br>• <b>Case Study:</b> Invisible Children utilized YouTube in 2006 to mobilize 80,000 people for the 'Night Commute'.",
         "img": "https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=800"
     },
     {
         "author": "Suhail Khan",
-        "title": "Foundational Concepts & Terminologies",
-        "content": "• Cyberactivism: The use of internet technologies specifically for progressive political purposes.\n• Hacktivism: A subset of cyberactivism involving technical exploits like disrupting servers for political ends.\n• Electronic Civil Disobedience (ECD): Translates nonviolent rule-breaking into the virtual sphere (e.g., 'virtual sit-ins').\n• Performative Vocabulary: Digital protest acts are often scripted, staged, and enacted for multiple audiences simultaneously.",
+        "title": "Foundational Concepts",
+        "content": "• <b>Cyberactivism:</b> The use of internet technologies specifically for progressive political purposes.<br><br>• <b>Hacktivism:</b> A subset of cyberactivism involving technical exploits like disrupting servers for political ends.<br><br>• <b>Electronic Civil Disobedience (ECD):</b> Translates nonviolent rule-breaking into the virtual sphere (e.g., 'virtual sit-ins').<br><br>• <b>Performative Vocabulary:</b> Digital protest acts are often scripted, staged, and enacted for multiple audiences simultaneously.",
         "img": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800"
     },
     {
         "author": "Suhail Khan",
         "title": "The Choreography of Assembly",
-        "content": "• Cyberspace vs. Cyberplace: While cyberspace is abstract, 'Cyberplace' is socially embedded and creates meaningful places for gathering.\n• Choreography of Assembly: The process of using social media to emotionally prepare and symbolically direct physical gatherings.\n• Choreographic Leadership: Indirect, consensual influence exercised by activist elites who 'propose' scripts rather than command.\n• Smart Mobs: Impromptu gatherings organized online, realized physically, and disseminated back into digital spaces.",
+        "content": "• <b>Cyberspace vs. Cyberplace:</b> While cyberspace is abstract, 'Cyberplace' is socially embedded and creates meaningful places for gathering.<br><br>• <b>Choreography of Assembly:</b> The process of using social media to emotionally prepare and symbolically direct physical gatherings.<br><br>• <b>Choreographic Leadership:</b> Indirect, consensual influence exercised by activist elites who 'propose' scripts rather than command.<br><br>• <b>Smart Mobs:</b> Impromptu gatherings organized online, realized physically, and disseminated back into digital spaces.",
         "img": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800"
     },
     {
         "author": "Shambhavi Mishra",
         "title": "Ideological Orientation",
-        "content": "• Participatory Democracy: The belief that technology can democratize communication by bypassing corporate gatekeepers.\n• Anti-Corporate Foundations: Protest must move into the digital infrastructures where 'nomadic' corporate power now resides.\n• Horizontalism: The ideal of leaderless, self-organizing networks where no single individual commands the movement.\n• The Public Sphere: Seeking to create online spaces for rational deliberation free from state and market distortions.",
+        "content": "• <b>Participatory Democracy:</b> The belief that technology can democratize communication by bypassing corporate gatekeepers.<br><br>• <b>Anti-Corporate Foundations:</b> Protest must move into the digital infrastructures where 'nomadic' corporate power now resides.<br><br>• <b>Horizontalism:</b> The ideal of leaderless, self-organizing networks where no single individual commands the movement.<br><br>• <b>The Public Sphere:</b> Seeking to create online spaces for rational deliberation free from state and market distortions.",
         "img": "https://images.unsplash.com/photo-1540910419892-f0c74b0e896a?w=800"
     },
     {
         "author": "Bhawna Sharma",
         "title": "Global Issues in Focus",
-        "content": "• Human Rights: Movements like Black Lives Matter use digital tools to expose localized police brutality to a global audience.\n• Gender Justice: The #MeToo movement empowered survivors to challenge patriarchal norms through visibility.\n• Environmental Justice: Fridays for Future mobilized global youth through digital networks to demand ecological accountability.\n• Digital Sphere Concerns: Activism now includes critiques of data privacy, surveillance, and corporate control over the internet.",
+        "content": "• <b>Human Rights:</b> Movements like Black Lives Matter use digital tools to expose localized police brutality to a global audience.<br><br>• <b>Gender Justice:</b> The #MeToo movement empowered survivors to challenge patriarchal norms through visibility.<br><br>• <b>Environmental Justice:</b> Fridays for Future mobilized global youth through digital networks to demand ecological accountability.<br><br>• <b>Digital Sphere Concerns:</b> Activism now includes critiques of data privacy, surveillance, and corporate control over the internet.",
         "img": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800"
     },
     {
         "author": "Drisya V.",
         "title": "Strategies for Social Change",
-        "content": "• Issue-Framing: Using personal stories and visuals to shape narratives and build public empathy.\n• Mobilization: Bridging the online-offline divide to move people from 'liking' a post to attending a physical protest.\n• Advocacy: Directly targeting institutions by flooding inboxes or trending topics to demand policy change.\n• The Quadruple 'A' Approach: Abstaining from platforms, Attacking them, building Alternative tools, or Adapting via clever usage.",
+        "content": "• <b>Issue-Framing:</b> Using personal stories and visuals to shape narratives and build public empathy.<br><br>• <b>Mobilization:</b> Bridging the online-offline divide to move people from 'liking' a post to attending a physical protest.<br><br>• <b>Advocacy:</b> Directly targeting institutions by flooding inboxes or trending topics to demand policy change.<br><br>• <b>The Quadruple 'A' Approach:</b> Abstaining from platforms, Attacking them, building Alternative tools, or Adapting via clever usage.",
         "img": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
     },
     {
         "author": "Drisya V.",
         "title": "Tactics in Practice",
-        "content": "• Hashtag Activism: Uniting disparate voices into a global chorus, such as #BlackLivesMatter or #MeToo.\n• Citizen Journalism: Bypassing traditional media during confrontations, such as Facebook Live during Standing Rock.\n• Viral Storytelling: Explaining complex issues through relatable memes, infographics, or short-form videos.\n• Data Activism: Crowdsourcing satellite imagery or citizen reports to expose corporate or environmental wrongdoing.",
+        "content": "• <b>Hashtag Activism:</b> Uniting disparate voices into a global chorus, such as #BlackLivesMatter or #MeToo.<br><br>• <b>Citizen Journalism:</b> Bypassing traditional media during confrontations, such as Facebook Live during Standing Rock.<br><br>• <b>Viral Storytelling:</b> Explaining complex issues through relatable memes, infographics, or short-form videos.<br><br>• <b>Data Activism:</b> Crowdsourcing satellite imagery or citizen reports to expose corporate or environmental wrongdoing.",
         "img": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800"
     },
     {
         "author": "Ankit Kumar & Sayna Choudhary",
         "title": "Organizational Structures",
-        "content": "• Flexible Networks: A shift from rigid hierarchies to fluid, horizontal networks where participants join or leave easily.\n• Key Features: Characterized by decentralization, connectivity across platforms, and an absence of formal bureaucratic rules.\n• Coalitions: Alliances between NGOs, students, and citizens that facilitate resource sharing and wider impact.\n• Technological Structuring: Messaging apps like WhatsApp and Telegram are now central to real-time coordination and planning.",
+        "content": "• <b>Flexible Networks:</b> A shift from rigid hierarchies to fluid, horizontal networks where participants join or leave easily.<br><br>• <b>Key Features:</b> Characterized by decentralization, connectivity across platforms, and an absence of formal bureaucratic rules.<br><br>• <b>Coalitions:</b> Alliances between NGOs, students, and citizens that facilitate resource sharing and wider impact.<br><br>• <b>Technological Structuring:</b> Messaging apps like WhatsApp and Telegram are now central to real-time coordination and planning.",
         "img": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800"
     },
     {
         "author": "Tannu Tanwar & Gaurav Nishad",
-        "title": "Achievements of Digital Activism",
-        "content": "• Rapid Mobilization: The ability to organize mass protests and campaigns within hours, as seen during the Arab Spring.\n• Connective Action: Personalized forms of engagement replace hierarchical organizational membership.\n• Creating Counter-Publics: Digital platforms allow marginalized groups to articulate alternative narratives and challenge news hierarchies.\n• Policy Impact: Translating online narratives into offline change, such as new workplace harassment laws resulting from #MeToo.",
+        "title": "Achievements",
+        "content": "• <b>Rapid Mobilization:</b> The ability to organize mass protests and campaigns within hours, as seen during the Arab Spring.<br><br>• <b>Connective Action:</b> Personalized forms of engagement replace hierarchical organizational membership.<br><br>• <b>Creating Counter-Publics:</b> Digital platforms allow marginalized groups to articulate alternative narratives and challenge news hierarchies.<br><br>• <b>Policy Impact:</b> Translating online narratives into offline change, such as new workplace harassment laws resulting from #MeToo.",
         "img": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800"
     },
     {
         "author": "Tannu Tanwar & Gaurav Nishad",
         "title": "Outcomes and Limitations",
-        "content": "• Slacktivism: The risk that low-effort online actions create an illusion of participation without meaningful change.\n• The Digital Divide: Participation is constrained by socioeconomic status, gender, and geographic location.\n• The Double-Edged Sword: The same tools that enable activism also facilitate state surveillance and repression.\n• Sustainability: Digital movements often face rapid cycles of attention where issues are quickly visible but just as quickly forgotten.",
+        "content": "• <b>Slacktivism:</b> The risk that low-effort online actions create an illusion of participation without meaningful change.<br><br>• <b>The Digital Divide:</b> Participation is constrained by socioeconomic status, gender, and geographic location.<br><br>• <b>The Double-Edged Sword:</b> The same tools that enable activism also facilitate state surveillance and repression.<br><br>• <b>Sustainability:</b> Digital movements often face rapid cycles of attention where issues are quickly visible but just as quickly forgotten.",
         "img": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800"
     }
 ]
 
-def generate_ppt():
-    prs = Presentation()
-    for item in SLIDES:
-        slide = prs.slides.add_slide(prs.slide_layouts[1]) # Title and Content layout
-        
-        # Format Title
-        title_shape = slide.shapes.title
-        title_shape.text = item["title"]
-        
-        # Format Body Text
-        body = slide.placeholders[1].text_frame
-        body.clear() # Clear default formatting
-        
-        if "author" in item:
-            p = body.add_paragraph()
-            p.text = f"Contributor: {item['author']}"
-            p.font.bold = True
-            p.font.size = Pt(18)
-        
-        if "content" in item:
-            lines = item["content"].split("\n")
-            for line in lines:
-                p = body.add_paragraph()
-                p.text = line
-                p.font.size = Pt(16)
-                p.space_after = Pt(10)
-        elif "subtitle" in item:
-            lines = item["subtitle"].split("\n")
-            for line in lines:
-                p = body.add_paragraph()
-                p.text = line
-                p.font.size = Pt(18)
+# --- PAGE CONFIGURATION ---
+st.set_page_config(page_title="Digital Activism", layout="wide", initial_sidebar_state="expanded")
 
-        # Add Image from URL (if available)
-        try:
-            response = requests.get(item["img"], timeout=5)
-            if response.status_code == 200:
-                img_stream = io.BytesIO(response.content)
-                slide.shapes.add_picture(img_stream, Inches(5.5), Inches(2), height=Inches(4))
-        except:
-            pass # Fails silently if image cannot be loaded
+# --- CUSTOM CSS FOR DARK THEME & BIG TEXT ---
+st.markdown("""
+    <style>
+    /* Global Font adjustments for dark theme appeal */
+    html, body, [class*="css"] {
+        color: #E0E0E0;
+    }
+    
+    /* Main Title Styling */
+    .main-title {
+        font-size: 5rem;
+        font-weight: 900;
+        text-align: center;
+        background: -webkit-linear-gradient(45deg, #FF4B4B, #FF8E53);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: -1rem;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+    }
 
-    ppt_io = io.BytesIO()
-    prs.save(ppt_io)
-    ppt_io.seek(0)
-    return ppt_io
+    /* Slide Card Container with Glassmorphism */
+    .slide-card {
+        background: rgba(30, 30, 34, 0.7);
+        border: 1px solid rgba(255, 75, 75, 0.2);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        animation: slideUp 0.6s ease-out forwards;
+        margin-bottom: 2rem;
+    }
 
-# --- STREAMLIT UI ---
-st.set_page_config(page_title="Digital Activism Tool", page_icon="✊", layout="wide")
+    /* Slide Headers */
+    .slide-title {
+        font-size: 3rem !important;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 0.5rem;
+        border-bottom: 2px solid #FF4B4B;
+        padding-bottom: 10px;
+        display: inline-block;
+    }
 
-st.markdown("<h1 style='text-align: center;'>✊ Digital Activism: Group Presentation Builder</h1>", unsafe_allow_html=True)
-st.write("---")
+    /* Author Tag */
+    .slide-author {
+        font-size: 1.5rem;
+        color: #FF8E53;
+        font-weight: 600;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+    }
 
-col1, col2, col3 = st.columns([1, 2, 1])
+    /* Big, readable body text */
+    .slide-text {
+        font-size: 1.6rem;
+        line-height: 1.8;
+        color: #D1D5DB;
+    }
+
+    /* Subtitle text for the intro slide */
+    .intro-subtitle {
+        font-size: 1.8rem;
+        line-height: 2;
+        color: #A0AEC0;
+        text-align: left;
+    }
+
+    /* Animation Keyframes */
+    @keyframes slideUp {
+        0% { opacity: 0; transform: translateY(40px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Hide Streamlit Branding for cleaner look */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
+
+# --- HEADER ---
+st.markdown("<div class='main-title'>Digital Activism</div>", unsafe_allow_html=True)
+
+# --- SIDEBAR NAVIGATION (Acts as presentation clicker) ---
+st.sidebar.markdown("<h2 style='font-size: 2rem; color: #FF4B4B;'>Navigation</h2>", unsafe_allow_html=True)
+st.sidebar.write("---")
+
+# Create a list of titles for the radio buttons
+slide_options = [f"{i+1}. {s['title']}" for i, s in enumerate(SLIDES)]
+selected_slide_str = st.sidebar.radio("Select a slide to view:", slide_options)
+
+# Get the index of the selected slide
+selected_index = slide_options.index(selected_slide_str)
+current_slide = SLIDES[selected_index]
+
+# --- RENDER THE SELECTED SLIDE ---
+# We wrap it in our custom CSS class for the animated, dark-theme card look
+st.markdown("<div class='slide-card'>", unsafe_allow_html=True)
+
+col1, col2 = st.columns([3, 2], gap="large")
+
+with col1:
+    st.markdown(f"<div class='slide-title'>{current_slide['title']}</div>", unsafe_allow_html=True)
+    
+    if "author" in current_slide:
+        st.markdown(f"<div class='slide-author'>👤 {current_slide['author']}</div>", unsafe_allow_html=True)
+    
+    st.write("") # Spacer
+    
+    if "content" in current_slide:
+        st.markdown(f"<div class='slide-text'>{current_slide['content']}</div>", unsafe_allow_html=True)
+    elif "subtitle" in current_slide:
+        # Formatting the intro slide specifically so it looks like a title page
+        formatted_subtitle = current_slide['subtitle'].replace('\n', '<br>')
+        st.markdown(f"<div class='intro-subtitle'>{formatted_subtitle}</div>", unsafe_allow_html=True)
+
 with col2:
-    st.info("Click the button below to generate and download the `.pptx` file containing all 12 detailed slides for your assignment.")
-    if st.button("🚀 Generate & Download Presentation", use_container_width=True):
-        with st.spinner("Compiling assignment data and building slides..."):
-            ppt_data = generate_ppt()
-            st.success("Presentation generated successfully!")
-            st.download_button(
-                label="📂 Download PPTX File",
-                data=ppt_data,
-                file_name="Digital_Activism_Group_Assignment.pptx",
-                mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                use_container_width=True
-            )
+    # Adding a slight vertical margin to center the image alongside the big text
+    st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
+    st.image(current_slide['img'], use_container_width=True)
 
-st.write("---")
-st.subheader("Interactive Presentation Preview")
-st.write("Click on the tabs below to read the detailed content for each slide. Opening a new tab automatically hides the previous one.")
-
-# Creating Tab Names
-tab_names = [
-    "1. Intro", "2. Emergence", "3. Trajectories", "4. Concepts", 
-    "5. Choreography", "6. Ideology", "7. Global Issues", "8. Strategies", 
-    "9. Tactics", "10. Structure", "11. Achievements", "12. Limitations"
-]
-
-# Generate Streamlit Tabs
-tabs = st.tabs(tab_names)
-
-# Populate Each Tab with Content
-for i, tab in enumerate(tabs):
-    with tab:
-        slide = SLIDES[i]
-        
-        # Display Image and Text side-by-side inside the tab
-        text_col, img_col = st.columns([3, 2])
-        
-        with text_col:
-            st.markdown(f"### {slide['title']}")
-            if "author" in slide:
-                st.markdown(f"**👤 Contributor:** {slide['author']}")
-            st.write("") # Spacer
-            
-            # Format the content text with markdown blockquotes for clean reading
-            if "content" in slide:
-                for line in slide['content'].split("\n"):
-                    st.write(line)
-            else:
-                st.write(slide['subtitle'])
-                
-        with img_col:
-            st.image(slide['img'], use_container_width=True)
+st.markdown("</div>", unsafe_allow_html=True)
